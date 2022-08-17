@@ -1,0 +1,33 @@
+{% load static %}
+<html>
+<head></head>
+<body>
+    {% block content %}{% endblock %}
+    <div id="sound">{{sound}}</div>
+    <script>
+        function reading() {
+          synth = new SpeechSynthesisUtterance(); // 設定を入れるオブジェクト
+          txt = document.getElementById("txt");   // テキストボックスを取得
+          sound = document.getElementById("sound");   // テキストボックスを取得
+          synth.text   = txt.value; // 話す内容
+          synth.lang   = "ja-JP";   // 言語
+          synth.rate   = 1.0;       // 速さ
+          synth.pitch  = 1.0;       // 高さ
+          synth.volume = 1.0;       // 音量
+          window.speechSynthesis.speak(synth);          // 話す
+          sleep(3000);
+          const music = new Audio(sound);
+          music.loop = false;
+          music.play();
+          sleep(5000);
+          exec_python();
+        };
+
+        function exec_python() {
+            $.ajax({
+              url: 'polls/views.py',
+            })
+        };
+      </script>
+</body>
+</html>
